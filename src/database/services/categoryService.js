@@ -15,4 +15,9 @@ const getCategories = async (...ids) => {
   return true;
 };
 
-module.exports = { createCategory, getCategories };
+const getAllCategories = async () => {
+  const categories = await Category.findAll();
+  return categories;
+};
+
+module.exports = { createCategory, getCategories, getAllCategories };
