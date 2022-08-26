@@ -27,4 +27,9 @@ const createUser = async (userData) => {
   return token;
 };
 
-module.exports = { createUser };
+const getUsers = async () => {
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  return users;
+};
+
+module.exports = { createUser, getUsers };

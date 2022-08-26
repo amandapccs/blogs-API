@@ -25,7 +25,9 @@ const getUser = async ({ email, password }) => {
     throw new CustomError(400, 'Invalid fields');
   }
 
-  const token = generateToken(checkUser);
+  delete checkUser.dataValues.password;
+
+  const token = generateToken(checkUser.dataValues);
   return token;
 };
 
