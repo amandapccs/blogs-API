@@ -28,4 +28,17 @@ const getPostById = async (req, res) => {
   res.status(200).json(post);
 };
 
-module.exports = { createPost, getPost, getPostById };
+const updatePost = async (req, res) => {
+  const { id } = req.params;
+
+  const token = req.headers.authorization;
+  const jwtSecret = process.env.JWT_SECRET;
+  const { data: { displayName } } = jwt.decode(token, jwtSecret);
+
+  const { title, content } = req.body;
+  const update = await PostService.updatePost({ displayName, id, title, content });
+
+  res.status(200).json(update);
+};
+
+module.exports = { createPost, getPost, getPostById, updatePost };

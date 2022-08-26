@@ -1,3 +1,4 @@
+const CustomError = require('../middlewares/CustomError');
 const { BlogPost, PostCategory, User, Category, sequelize } = require('../models');
 
 const getUser = async (displayName) => {
@@ -20,7 +21,7 @@ const getPostById = async (id) => {
     where: { id },
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
-      { model: Category, as: 'categories' },
+      { model: Category, as: 'categories', through: { attributes: [] } },
     ],
   });
 
@@ -47,4 +48,15 @@ const createPost = async ({ title, content, categoryIds, displayName }) => {
   return transactionResult;
 };
 
-module.exports = { createPost, getPostByTitle, getPost, getPostById };
+const updatePost = async ({ displayName, id, title, content }) => {
+  const userId = await getUser(displayName);
+  const { dataValues: { user } } = await getPostById(id);
+  if (userId !== user.id) throw new CustomError(401, 'Unauthorized user');
+
+  await BlogPost.update({ title, content }, { where: { id } });
+
+  const updatedPost = await getPostById(id);
+  return updatedPost;
+};
+
+module.exports = { createPost, getPostByTitle, getPost, getPostById, updatePost };
