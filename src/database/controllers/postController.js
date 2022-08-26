@@ -10,9 +10,14 @@ const createPost = async (req, res) => {
 
   const { displayName } = decoded.data;
   await PostService.createPost({ title, content, categoryIds, displayName });
-  const post = await PostService.getPost(title);
+  const post = await PostService.getPostByTitle(title);
 
   res.status(201).json(post);
 };
 
-module.exports = { createPost };
+const getPost = async (req, res) => {
+  const posts = await PostService.getPost();
+  res.status(200).json(posts);
+};
+
+module.exports = { createPost, getPost };

@@ -7,7 +7,7 @@ const { userValidations } = require('./database/middlewares/userValidations');
 const { createUser, getUsers, getUsersById } = require('./database/controllers/userController');
 const { validateJWT } = require('./database/middlewares/validateJWT');
 const { createCategory, getCategories } = require('./database/controllers/categoryController');
-const { createPost } = require('./database/controllers/postController');
+const { createPost, getPost } = require('./database/controllers/postController');
 const { categoryValidation } = require('./database/middlewares/categoryValidation');
 
 // não remova a variável `API_PORT` ou o `listen`
@@ -24,6 +24,7 @@ app.get('/user/:id', validateJWT, getUsersById);
 app.post('/categories', validateJWT, createCategory);
 app.get('/categories', validateJWT, getCategories);
 app.post('/post', validateJWT, categoryValidation, createPost);
+app.get('/post', validateJWT, getPost);
 
 app.use(errorMiddleware);
 
