@@ -41,4 +41,18 @@ const updatePost = async (req, res) => {
   res.status(200).json(update);
 };
 
-module.exports = { createPost, getPost, getPostById, updatePost };
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+
+  const token = req.headers.authorization;
+  const jwtSecret = process.env.JWT_SECRET;
+  const { data: { displayName } } = jwt.decode(token, jwtSecret);
+
+  const post = await PostService.getPostById(id);
+  if (!post) throw new CustomError(404, 'Post does not exist');
+
+  await PostService.deletePost({ displayName, id });
+  res.status(204).json();
+};
+
+module.exports = { createPost, getPost, getPostById, updatePost, deletePost };

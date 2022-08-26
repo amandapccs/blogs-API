@@ -59,4 +59,12 @@ const updatePost = async ({ displayName, id, title, content }) => {
   return updatedPost;
 };
 
-module.exports = { createPost, getPostByTitle, getPost, getPostById, updatePost };
+const deletePost = async ({ displayName, id }) => {
+  const userId = await getUser(displayName);
+  const { dataValues: { user } } = await getPostById(id);
+  if (userId !== user.id) throw new CustomError(401, 'Unauthorized user');
+
+  await BlogPost.destroy({ where: { id } });
+};
+
+module.exports = { createPost, getPostByTitle, getPost, getPostById, updatePost, deletePost };

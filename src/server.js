@@ -8,7 +8,7 @@ const { createUser, getUsers, getUsersById } = require('./database/controllers/u
 const { validateJWT } = require('./database/middlewares/validateJWT');
 const { createCategory, getCategories } = require('./database/controllers/categoryController');
 const { createPost, getPost, getPostById,
-  updatePost } = require('./database/controllers/postController');
+  updatePost, deletePost } = require('./database/controllers/postController');
 const { categoryValidation } = require('./database/middlewares/categoryValidation');
 const { validateUpdate } = require('./database/middlewares/postValidations');
 
@@ -29,6 +29,7 @@ app.post('/post', validateJWT, categoryValidation, createPost);
 app.get('/post', validateJWT, getPost);
 app.get('/post/:id', validateJWT, getPostById);
 app.put('/post/:id', validateJWT, validateUpdate, updatePost);
+app.delete('/post/:id', validateJWT, deletePost);
 
 app.use(errorMiddleware);
 
