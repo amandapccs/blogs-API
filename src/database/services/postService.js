@@ -15,6 +15,18 @@ const getPost = async () => {
   return posts;
 };
 
+const getPostById = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories' },
+    ],
+  });
+
+  return post;
+};
+
 const getPostByTitle = async (title) => {
   const post = await BlogPost.findOne({ where: { title } });
   return post;
@@ -35,4 +47,4 @@ const createPost = async ({ title, content, categoryIds, displayName }) => {
   return transactionResult;
 };
 
-module.exports = { createPost, getPostByTitle, getPost };
+module.exports = { createPost, getPostByTitle, getPost, getPostById };
