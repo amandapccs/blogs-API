@@ -4,7 +4,7 @@ const app = require('./api');
 const { login } = require('./database/controllers/loginController');
 const errorMiddleware = require('./database/middlewares/errorMiddleware');
 const { userValidations } = require('./database/middlewares/userValidations');
-const { createUser, getUsers } = require('./database/controllers/userController');
+const { createUser, getUsers, getUsersById } = require('./database/controllers/userController');
 const { validateJWT } = require('./database/middlewares/validateJWT');
 
 // não remova a variável `API_PORT` ou o `listen`
@@ -17,6 +17,7 @@ app.get('/', (_request, response) => {
 app.post('/login', login);
 app.post('/user', userValidations, createUser);
 app.get('/user', validateJWT, getUsers);
+app.get('/user/:id', validateJWT, getUsersById);
 
 app.use(errorMiddleware);
 
