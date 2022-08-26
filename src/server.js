@@ -6,6 +6,7 @@ const errorMiddleware = require('./database/middlewares/errorMiddleware');
 const { userValidations } = require('./database/middlewares/userValidations');
 const { createUser, getUsers, getUsersById } = require('./database/controllers/userController');
 const { validateJWT } = require('./database/middlewares/validateJWT');
+const { createCategory } = require('./database/controllers/categoryController');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -18,6 +19,7 @@ app.post('/login', login);
 app.post('/user', userValidations, createUser);
 app.get('/user', validateJWT, getUsers);
 app.get('/user/:id', validateJWT, getUsersById);
+app.post('/categories', validateJWT, createCategory);
 
 app.use(errorMiddleware);
 
