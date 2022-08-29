@@ -4,7 +4,8 @@ const app = require('./api');
 const { login } = require('./database/controllers/loginController');
 const errorMiddleware = require('./database/middlewares/errorMiddleware');
 const { userValidations } = require('./database/middlewares/userValidations');
-const { createUser, getUsers, getUsersById } = require('./database/controllers/userController');
+const { createUser, getUsers, getUsersById,
+   removeUser } = require('./database/controllers/userController');
 const { validateJWT } = require('./database/middlewares/validateJWT');
 const { createCategory, getCategories } = require('./database/controllers/categoryController');
 const { createPost, getPost, getPostById,
@@ -23,6 +24,7 @@ app.post('/login', login);
 app.post('/user', userValidations, createUser);
 app.get('/user', validateJWT, getUsers);
 app.get('/user/:id', validateJWT, getUsersById);
+app.delete('/user/me', validateJWT, removeUser);
 app.post('/categories', validateJWT, createCategory);
 app.get('/categories', validateJWT, getCategories);
 app.post('/post', validateJWT, categoryValidation, createPost);

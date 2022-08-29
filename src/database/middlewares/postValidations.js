@@ -6,10 +6,6 @@ const validateUpdate = (req, res, next) => {
   if (!title || !content) {
     throw new CustomError(400, 'Some required fields are missing');
   }
-
-  // const { id } = req.params;
-  // const findUser = getUserById(id);
-  // if (!findUser) throw new CustomError(401, 'Unauthorized user');
   next();
 };
 

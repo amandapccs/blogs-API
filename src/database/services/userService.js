@@ -38,4 +38,8 @@ const getUserById = async (id) => {
   return user;
 };
 
-module.exports = { createUser, getUsers, getUserById };
+const removeUser = async (id) => {
+  await User.destroy({ where: { id } });
+};
+
+module.exports = { createUser, getUsers, getUserById, removeUser };
