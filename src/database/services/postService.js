@@ -1,5 +1,8 @@
+const SEQUELIZE = require('sequelize');
 const CustomError = require('../middlewares/CustomError');
 const { BlogPost, PostCategory, User, Category, sequelize } = require('../models');
+
+const { Op } = SEQUELIZE;
 
 const getUser = async (displayName) => {
   const user = await User.findOne({ where: { displayName } });
@@ -67,4 +70,31 @@ const deletePost = async ({ displayName, id }) => {
   await BlogPost.destroy({ where: { id } });
 };
 
-module.exports = { createPost, getPostByTitle, getPost, getPostById, updatePost, deletePost };
+const searchPost = async (searchTerm) => {
+  const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${searchTerm}%` } },
+        { content: { [Op.like]: `%${searchTerm}%` } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } }, 
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!posts) return [];
+
+  return posts;
+};
+
+module.exports = {
+  createPost,
+  getPostByTitle, 
+  getPost,
+  getPostById,
+  updatePost,
+  deletePost,
+  searchPost,
+};

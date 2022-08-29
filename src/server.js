@@ -9,7 +9,7 @@ const { createUser, getUsers, getUsersById,
 const { validateJWT } = require('./database/middlewares/validateJWT');
 const { createCategory, getCategories } = require('./database/controllers/categoryController');
 const { createPost, getPost, getPostById,
-  updatePost, deletePost } = require('./database/controllers/postController');
+  updatePost, deletePost, searchPost } = require('./database/controllers/postController');
 const { categoryValidation } = require('./database/middlewares/categoryValidation');
 const { validateUpdate } = require('./database/middlewares/postValidations');
 
@@ -20,6 +20,7 @@ const port = process.env.API_PORT || 3000;
 app.get('/', (_request, response) => {
   response.send();
 });
+app.get('/post/search', validateJWT, searchPost);
 app.post('/login', login);
 app.post('/user', userValidations, createUser);
 app.get('/user', validateJWT, getUsers);
